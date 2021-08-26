@@ -41,7 +41,10 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Timer.periodic(Duration(milliseconds: 100), (Timer t) => checkLink());
+    Timer.periodic(
+      Duration(seconds: 60),
+      (Timer t) => checkLink(),
+    );
     webView();
 
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
