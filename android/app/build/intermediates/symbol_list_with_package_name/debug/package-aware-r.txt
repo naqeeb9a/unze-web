@@ -577,6 +577,7 @@ drawable abc_textfield_search_material
 drawable abc_vector_test
 drawable ic_stat_logo
 drawable launch_background
+drawable logo
 drawable notification_action_background
 drawable notification_bg
 drawable notification_bg_low

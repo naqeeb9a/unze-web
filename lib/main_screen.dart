@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import 'api/notification_api.dart';
+
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
 
@@ -17,6 +19,8 @@ class _MainScreenState extends State<MainScreen> {
   Completer<WebViewController> _controller = Completer<WebViewController>();
 
   late bool netConnection;
+
+  int position = 1;
 
   Future<dynamic> webView() async {
     print(_controller);
@@ -42,6 +46,8 @@ class _MainScreenState extends State<MainScreen> {
     Timer.periodic(Duration(milliseconds: 100), (Timer t) => checkLink());
     webView();
 
+    ApiData().fetchNotification();
+
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
   }
 
@@ -51,19 +57,23 @@ class _MainScreenState extends State<MainScreen> {
 
     if (currentUrl == "tel:042111118693") {
       launch("tel://03353961635");
+      bool canNavigate = await webViewController.canGoBack();
+      if (canNavigate) {
+        webViewController.goBack();
+      }
     } else if (currentUrl ==
         "https://api.whatsapp.com/send/?phone=923458963222&text&app_absent=0") {
       String urlWW = "whatsapp://send?phone=+923353961635&text=hello";
       launch(urlWW);
       if (await canLaunch(urlWW)) {
         launch(urlWW);
+        bool canNavigate = await webViewController.canGoBack();
+        if (canNavigate) {
+          webViewController.goBack();
+        }
       } else {
         print("no whatsapp installed");
       }
-    }
-    bool canNavigate = await webViewController.canGoBack();
-    if (canNavigate) {
-      webViewController.goBack();
     }
   }
 
@@ -81,69 +91,100 @@ class _MainScreenState extends State<MainScreen> {
       child: Scaffold(
         backgroundColor: Color(0xff5d443c),
         body: netConnection == true
-            ? Container(
-                width: MediaQuery.of(context).size.width * 1,
-                height: MediaQuery.of(context).size.height * 1,
-                child: Column(
-                  children: [
-                    Row(
+            ? IndexedStack(
+                index: position,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width * 1,
+                    height: MediaQuery.of(context).size.height * 1,
+                    child: Column(
                       children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 1,
-                          height: MediaQuery.of(context).size.height * .896,
-                          child: WebView(
-                            initialUrl: 'https://unze.com.pk/',
-                            javascriptMode: JavascriptMode.unrestricted,
-                            onWebViewCreated:
-                                (WebViewController webViewController) {
-                              _controller.complete(webViewController);
-                            },
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 1,
+                              height: MediaQuery.of(context).size.height * .896,
+                              child: WebView(
+                                initialUrl: 'https://unze.com.pk/',
+                                javascriptMode: JavascriptMode.unrestricted,
+                                onWebViewCreated:
+                                    (WebViewController webViewController) {
+                                  _controller.complete(webViewController);
+                                },
+                                onPageStarted: (value) {
+                                  setState(() {
+                                    position = 1;
+                                    Future.delayed(Duration(seconds: 1), () {
+                                      setState(() {
+                                        position = 0;
+                                      });
+                                    });
+                                  });
+                                },
+                                onPageFinished: (value) {
+                                  setState(() {
+                                    position = 0;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        InkWell(
+                          onTap: _willPopCallback,
+                          child: Row(
+                            children: [
+                              Container(
+                                width: MediaQuery.of(context).size.width * 1,
+                                height:
+                                    MediaQuery.of(context).size.height * .06,
+                                color: Color(0xff5d443c),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.arrow_back_ios,
+                                          color: Colors.white,
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Go Back",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.05,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
                     ),
-                    InkWell(
-                      onTap: _willPopCallback,
-                      child: Row(
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width * 1,
-                            height: MediaQuery.of(context).size.height * .06,
-                            color: Color(0xff5d443c),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.arrow_back_ios,
-                                      color: Colors.white,
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "Go Back",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize:
-                                            MediaQuery.of(context).size.width *
-                                                0.05,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                  ),
+                  Container(
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               )
             : Container(
                 width: MediaQuery.of(context).size.width * 1,
