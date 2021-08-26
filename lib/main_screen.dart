@@ -1,0 +1,213 @@
+import 'dart:async';
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+
+class MainScreen extends StatefulWidget {
+  const MainScreen({Key? key}) : super(key: key);
+
+  @override
+  _MainScreenState createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  Completer<WebViewController> _controller = Completer<WebViewController>();
+
+  late bool netConnection;
+
+  Future<dynamic> webView() async {
+    print(_controller);
+    netConnection = false;
+    try {
+      final net = await InternetAddress.lookup('example.com');
+      if (net.isNotEmpty && net[0].rawAddress.isNotEmpty) {
+        setState(() {
+          netConnection = true;
+        });
+      }
+    } on SocketException catch (_) {
+      setState(() {
+        netConnection = false;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Timer.periodic(Duration(milliseconds: 100), (Timer t) => checkLink());
+    webView();
+
+    if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
+  }
+
+  checkLink() async {
+    WebViewController webViewController = await _controller.future;
+    var currentUrl = await webViewController.currentUrl();
+
+    if (currentUrl == "tel:042111118693") {
+      launch("tel://03353961635");
+    } else if (currentUrl ==
+        "https://api.whatsapp.com/send/?phone=923458963222&text&app_absent=0") {
+      String urlWW = "whatsapp://send?phone=+923353961635&text=hello";
+      launch(urlWW);
+      if (await canLaunch(urlWW)) {
+        launch(urlWW);
+      } else {
+        print("no whatsapp installed");
+      }
+    }
+    bool canNavigate = await webViewController.canGoBack();
+    if (canNavigate) {
+      webViewController.goBack();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    void _willPopCallback() async {
+      WebViewController webViewController = await _controller.future;
+      bool canNavigate = await webViewController.canGoBack();
+      if (canNavigate) {
+        webViewController.goBack();
+      }
+    }
+
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Color(0xff5d443c),
+        body: netConnection == true
+            ? Container(
+                width: MediaQuery.of(context).size.width * 1,
+                height: MediaQuery.of(context).size.height * 1,
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 1,
+                          height: MediaQuery.of(context).size.height * .896,
+                          child: WebView(
+                            initialUrl: 'https://unze.com.pk/',
+                            javascriptMode: JavascriptMode.unrestricted,
+                            onWebViewCreated:
+                                (WebViewController webViewController) {
+                              _controller.complete(webViewController);
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    InkWell(
+                      onTap: _willPopCallback,
+                      child: Row(
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width * 1,
+                            height: MediaQuery.of(context).size.height * .06,
+                            color: Color(0xff5d443c),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.arrow_back_ios,
+                                      color: Colors.white,
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Go Back",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize:
+                                            MediaQuery.of(context).size.width *
+                                                0.05,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            : Container(
+                width: MediaQuery.of(context).size.width * 1,
+                height: MediaQuery.of(context).size.height * 1,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.wifi_off_rounded,
+                          color: Colors.white,
+                          size: MediaQuery.of(context).size.width * .2,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "No Internet Connection!!",
+                          style: TextStyle(
+                            fontSize: MediaQuery.of(context).size.width * .07,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: webView,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * .4,
+                            height: MediaQuery.of(context).size.height * .07,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(
+                                MediaQuery.of(context).size.width * .02,
+                              ),
+                            ),
+                            margin: EdgeInsets.only(
+                              top: MediaQuery.of(context).size.height * .02,
+                            ),
+                            child: Center(
+                              child: Text(
+                                "Reload!",
+                                style: TextStyle(
+                                  fontSize:
+                                      MediaQuery.of(context).size.width * .06,
+                                  color: Color(0xff5d443c),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+      ),
+    );
+  }
+}
