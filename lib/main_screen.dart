@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import 'api/notification_api.dart';
-
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
 
@@ -46,8 +44,6 @@ class _MainScreenState extends State<MainScreen> {
     Timer.periodic(Duration(milliseconds: 100), (Timer t) => checkLink());
     webView();
 
-    ApiData().fetchNotification();
-
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
   }
 
@@ -64,7 +60,6 @@ class _MainScreenState extends State<MainScreen> {
     } else if (currentUrl ==
         "https://api.whatsapp.com/send/?phone=923458963222&text&app_absent=0") {
       String urlWW = "whatsapp://send?phone=+923353961635&text=hello";
-      launch(urlWW);
       if (await canLaunch(urlWW)) {
         launch(urlWW);
         bool canNavigate = await webViewController.canGoBack();
@@ -89,7 +84,7 @@ class _MainScreenState extends State<MainScreen> {
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0xff5d443c),
+        backgroundColor: Colors.white,
         body: netConnection == true
             ? IndexedStack(
                 index: position,
@@ -180,7 +175,7 @@ class _MainScreenState extends State<MainScreen> {
                   Container(
                     child: Center(
                       child: CircularProgressIndicator(
-                        color: Colors.white,
+                        color: Color(0xff5d443c),
                       ),
                     ),
                   ),
@@ -197,7 +192,7 @@ class _MainScreenState extends State<MainScreen> {
                       children: [
                         Icon(
                           Icons.wifi_off_rounded,
-                          color: Colors.white,
+                          color: Color(0xff5d443c),
                           size: MediaQuery.of(context).size.width * .2,
                         ),
                       ],
@@ -209,7 +204,7 @@ class _MainScreenState extends State<MainScreen> {
                           "No Internet Connection!!",
                           style: TextStyle(
                             fontSize: MediaQuery.of(context).size.width * .07,
-                            color: Colors.white,
+                            color: Color(0xff5d443c),
                           ),
                         ),
                       ],
@@ -223,7 +218,7 @@ class _MainScreenState extends State<MainScreen> {
                             width: MediaQuery.of(context).size.width * .4,
                             height: MediaQuery.of(context).size.height * .07,
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Color(0xff5d443c),
                               borderRadius: BorderRadius.circular(
                                 MediaQuery.of(context).size.width * .02,
                               ),
@@ -237,7 +232,7 @@ class _MainScreenState extends State<MainScreen> {
                                 style: TextStyle(
                                   fontSize:
                                       MediaQuery.of(context).size.width * .06,
-                                  color: Color(0xff5d443c),
+                                  color: Colors.white,
                                 ),
                               ),
                             ),
