@@ -42,7 +42,7 @@ class _MainScreenState extends State<MainScreen> {
     // TODO: implement initState
     super.initState();
     Timer.periodic(
-      Duration(milliseconds: 10),
+      Duration(milliseconds: 100),
       (Timer t) => checkLink(),
     );
     webView();
