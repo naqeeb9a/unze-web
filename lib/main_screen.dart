@@ -101,14 +101,14 @@ class _MainScreenState extends State<MainScreen> {
                 children: [
                   Container(
                     width: MediaQuery.of(context).size.width * 1,
-                    height: MediaQuery.of(context).size.height * 1,
+                    height: double.infinity,
                     child: Column(
                       children: [
                         Row(
                           children: [
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 1,
-                              height: MediaQuery.of(context).size.height * .897,
+                              height: MediaQuery.of(context).size.height * .9,
                               child: WebView(
                                 initialUrl: 'https://unze.com.pk/',
                                 javascriptMode: JavascriptMode.unrestricted,
@@ -135,48 +135,48 @@ class _MainScreenState extends State<MainScreen> {
                             ),
                           ],
                         ),
-                        InkWell(
-                          onTap: _willPopCallback,
-                          child: Row(
-                            children: [
-                              Container(
-                                width: MediaQuery.of(context).size.width * 1,
-                                height:
-                                    MediaQuery.of(context).size.height * .06,
-                                color: Color(0xff5d443c),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.arrow_back_ios,
-                                          color: Colors.white,
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "Go Back",
-                                          style: TextStyle(
+                        Expanded(
+                          child: InkWell(
+                            onTap: _willPopCallback,
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: MediaQuery.of(context).size.width * 1,
+                                  color: Color(0xff5d443c),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.arrow_back_ios,
                                             color: Colors.white,
-                                            fontSize: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.05,
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                        ],
+                                      ),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "Go Back",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.05,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ],
