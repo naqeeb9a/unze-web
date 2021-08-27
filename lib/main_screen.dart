@@ -16,7 +16,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   Completer<WebViewController> _controller = Completer<WebViewController>();
 
-  late bool netConnection;
+  bool netConnection = true;
 
   int position = 1;
 
@@ -41,11 +41,11 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    webView();
     Timer.periodic(
       Duration(milliseconds: 100),
       (Timer t) => checkLink(),
     );
-    webView();
 
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
   }
