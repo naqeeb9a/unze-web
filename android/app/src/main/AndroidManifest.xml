@@ -5,6 +5,9 @@
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <queries>
+        <package android:name="com.whatsapp" />
+    </queries>
    <application
         android:label="Unze"
         android:icon="@mipmap/ic_launcher">

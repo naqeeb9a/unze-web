@@ -11,19 +11,20 @@ import 'main_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AndroidAlarmManager.initialize();
-  await AndroidAlarmManager.periodic(Duration(seconds: 3), 0, pushNotification);
+  await AndroidAlarmManager.periodic(Duration(minutes: 1), 0, pushNotification);
   runApp(MyApp());
 }
 
 Future<void> pushNotification() async {
+  var nDate = DateTime.now().toString().substring(0, 10);
+  var nTime = DateTime.now().toString().substring(11, 16);
   var newNotification = [];
   var notificationData = await http
       .get(Uri.parse("https://attendanceapp.genxmtech.com/push/api.php?id=1"));
   var notificationDataBody = json.decode(notificationData.body);
-  var nDate = DateTime.now().toString().substring(0, 10);
-  var nTime = DateTime.now().toString().substring(11, 16);
+
   for (var u in notificationDataBody) {
-    if (u["status"] == "0" && u["date"] == nDate && u["time"] == nTime) {
+    if (u["date"] == nDate && u["time"] == nTime) {
       newNotification.add(u);
     }
   }

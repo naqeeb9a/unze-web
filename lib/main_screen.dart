@@ -42,7 +42,7 @@ class _MainScreenState extends State<MainScreen> {
     // TODO: implement initState
     super.initState();
     Timer.periodic(
-      Duration(seconds: 60),
+      Duration(milliseconds: 10),
       (Timer t) => checkLink(),
     );
     webView();
@@ -54,23 +54,30 @@ class _MainScreenState extends State<MainScreen> {
     WebViewController webViewController = await _controller.future;
     var currentUrl = await webViewController.currentUrl();
 
-    if (currentUrl == "tel:042111118693") {
+    currentUrl = currentUrl.toString().replaceAll("%20", "");
+    if (currentUrl.toString().contains("tel:042111118693")) {
       launch("tel://03353961635");
       bool canNavigate = await webViewController.canGoBack();
       if (canNavigate) {
         webViewController.goBack();
       }
-    } else if (currentUrl ==
-        "https://api.whatsapp.com/send/?phone=923458963222&text&app_absent=0") {
-      String urlWW = "whatsapp://send?phone=+923353961635&text=hello";
+    } else if (currentUrl
+        .toString()
+        .contains("mailto:customersupport@unze.com.pk")) {
+      launch("mailto:customersupport@unze.com.pk");
+      bool canNavigate = await webViewController.canGoBack();
+      if (canNavigate) {
+        webViewController.goBack();
+      }
+    } else if (currentUrl.toString().contains("api.whatsapp.com/send")) {
+      String urlWW = "whatsapp://send?phone=+923458963222&text=Hi";
+      launch(urlWW);
       if (await canLaunch(urlWW)) {
         launch(urlWW);
         bool canNavigate = await webViewController.canGoBack();
         if (canNavigate) {
           webViewController.goBack();
         }
-      } else {
-        print("no whatsapp installed");
       }
     }
   }
@@ -101,7 +108,7 @@ class _MainScreenState extends State<MainScreen> {
                           children: [
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 1,
-                              height: MediaQuery.of(context).size.height * .896,
+                              height: MediaQuery.of(context).size.height * .9,
                               child: WebView(
                                 initialUrl: 'https://unze.com.pk/',
                                 javascriptMode: JavascriptMode.unrestricted,
