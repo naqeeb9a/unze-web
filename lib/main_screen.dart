@@ -43,7 +43,7 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
     webView();
     Timer.periodic(
-      Duration(milliseconds: 100),
+      Duration(milliseconds: 10),
       (Timer t) => checkLink(),
     );
 
@@ -70,14 +70,10 @@ class _MainScreenState extends State<MainScreen> {
         webViewController.goBack();
       }
     } else if (currentUrl.toString().contains("api.whatsapp.com/send")) {
-      String urlWW = "whatsapp://send?phone=+923458963222&text=Hi";
-      launch(urlWW);
-      if (await canLaunch(urlWW)) {
-        launch(urlWW);
-        bool canNavigate = await webViewController.canGoBack();
-        if (canNavigate) {
-          webViewController.goBack();
-        }
+      launch("whatsapp://send?phone=+923458963222&text=Hi");
+      bool canNavigate = await webViewController.canGoBack();
+      if (canNavigate) {
+        webViewController.goBack();
       }
     }
   }
