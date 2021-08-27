@@ -69,7 +69,8 @@ class _MainScreenState extends State<MainScreen> {
       if (canNavigate) {
         webViewController.goBack();
       }
-    } else if (currentUrl.toString().contains("api.whatsapp.com/send")) {
+    } else if (currentUrl ==
+        "https://api.whatsapp.com/send/?phone=923458963222&text&app_absent=0") {
       launch("whatsapp://send?phone=+923458963222&text=Hi");
       bool canNavigate = await webViewController.canGoBack();
       if (canNavigate) {
