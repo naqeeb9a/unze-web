@@ -43,7 +43,7 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
     webView();
     Timer.periodic(
-      Duration(seconds: 1),
+      Duration(milliseconds: 120),
       (Timer t) => checkLink(),
     );
 
@@ -81,175 +81,123 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    void _willPopCallback() async {
-      WebViewController webViewController = await _controller.future;
-      bool canNavigate = await webViewController.canGoBack();
-      if (canNavigate) {
-        webViewController.goBack();
-      }
-    }
-
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: netConnection == true
-            ? IndexedStack(
-                index: position,
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * 1,
-                    height: double.infinity,
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 1,
-                              height: MediaQuery.of(context).size.height * .9,
-                              child: WebView(
-                                initialUrl: 'https://unze.com.pk/',
-                                javascriptMode: JavascriptMode.unrestricted,
-                                onWebViewCreated:
-                                    (WebViewController webViewController) {
-                                  _controller.complete(webViewController);
-                                },
-                                onPageStarted: (value) {
-                                  setState(() {
-                                    position = 1;
-                                    Future.delayed(Duration(seconds: 1), () {
-                                      setState(() {
-                                        position = 0;
-                                      });
-                                    });
-                                  });
-                                },
-                                onPageFinished: (value) {
-                                  setState(() {
-                                    position = 0;
-                                  });
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                        Expanded(
-                          child: InkWell(
-                            onTap: _willPopCallback,
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: MediaQuery.of(context).size.width * 1,
-                                  color: Color(0xff5d443c),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            Icons.arrow_back_ios,
-                                            color: Colors.white,
-                                          ),
-                                        ],
-                                      ),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            "Go Back",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.05,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        color: Color(0xff5d443c),
+    return WillPopScope(
+      onWillPop: () async {
+        WebViewController webViewController = await _controller.future;
+        var currentUrl = await webViewController.currentUrl();
+        if (currentUrl == "https://unze.com.pk/") {
+          return true;
+        } else {
+          await webViewController.goBack();
+          return false;
+        }
+      },
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          body: netConnection == true
+              ? IndexedStack(
+                  index: position,
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width * 1,
+                      height: double.infinity,
+                      child: WebView(
+                        initialUrl: 'https://unze.com.pk/',
+                        javascriptMode: JavascriptMode.unrestricted,
+                        onWebViewCreated:
+                            (WebViewController webViewController) {
+                          _controller.complete(webViewController);
+                        },
+                        onPageStarted: (value) {
+                          setState(() {
+                            position = 1;
+                            Future.delayed(Duration(seconds: 1), () {
+                              setState(() {
+                                position = 0;
+                              });
+                            });
+                          });
+                        },
+                        onPageFinished: (value) {
+                          setState(() {
+                            position = 0;
+                          });
+                        },
                       ),
                     ),
-                  ),
-                ],
-              )
-            : Container(
-                width: MediaQuery.of(context).size.width * 1,
-                height: MediaQuery.of(context).size.height * 1,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.wifi_off_rounded,
+                    Container(
+                      child: Center(
+                        child: CircularProgressIndicator(
                           color: Color(0xff5d443c),
-                          size: MediaQuery.of(context).size.width * .2,
                         ),
-                      ],
+                      ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "No Internet Connection!!",
-                          style: TextStyle(
-                            fontSize: MediaQuery.of(context).size.width * .07,
+                  ],
+                )
+              : Container(
+                  width: MediaQuery.of(context).size.width * 1,
+                  height: MediaQuery.of(context).size.height * 1,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.wifi_off_rounded,
                             color: Color(0xff5d443c),
+                            size: MediaQuery.of(context).size.width * .2,
                           ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        InkWell(
-                          onTap: webView,
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * .4,
-                            height: MediaQuery.of(context).size.height * .07,
-                            decoration: BoxDecoration(
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "No Internet Connection!!",
+                            style: TextStyle(
+                              fontSize: MediaQuery.of(context).size.width * .07,
                               color: Color(0xff5d443c),
-                              borderRadius: BorderRadius.circular(
-                                MediaQuery.of(context).size.width * .02,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          InkWell(
+                            onTap: webView,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * .4,
+                              height: MediaQuery.of(context).size.height * .07,
+                              decoration: BoxDecoration(
+                                color: Color(0xff5d443c),
+                                borderRadius: BorderRadius.circular(
+                                  MediaQuery.of(context).size.width * .02,
+                                ),
                               ),
-                            ),
-                            margin: EdgeInsets.only(
-                              top: MediaQuery.of(context).size.height * .02,
-                            ),
-                            child: Center(
-                              child: Text(
-                                "Reload!",
-                                style: TextStyle(
-                                  fontSize:
-                                      MediaQuery.of(context).size.width * .06,
-                                  color: Colors.white,
+                              margin: EdgeInsets.only(
+                                top: MediaQuery.of(context).size.height * .02,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "Reload!",
+                                  style: TextStyle(
+                                    fontSize:
+                                        MediaQuery.of(context).size.width * .06,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
+        ),
       ),
     );
   }

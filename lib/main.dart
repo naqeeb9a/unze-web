@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 
 import 'main_screen.dart';
@@ -11,39 +11,66 @@ import 'main_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AndroidAlarmManager.initialize();
-  await AndroidAlarmManager.periodic(Duration(minutes: 1), 0, pushNotification);
+  await AndroidAlarmManager.periodic(Duration(minutes: 1), 0, notify);
   runApp(MyApp());
 }
 
-Future<void> pushNotification() async {
+notify() async {
+  AwesomeNotifications().initialize('resource://drawable/ic_stat_logo', [
+    NotificationChannel(
+      channelKey: "key1",
+      channelName: "proton coders point",
+      channelDescription: "notification example",
+      enableLights: true,
+      enableVibration: true,
+      importance: NotificationImportance.High,
+    )
+  ]);
   var nDate = DateTime.now().toString().substring(0, 10);
   var nTime = DateTime.now().toString().substring(11, 16);
+  print(nDate);
+  print(nTime);
   var newNotification = [];
+  var nImages = [];
   var notificationData = await http
       .get(Uri.parse("https://attendanceapp.genxmtech.com/push/api.php?id=1"));
   var notificationDataBody = json.decode(notificationData.body);
-
   for (var u in notificationDataBody) {
+    // newNotification.add(u);
+    // if (u["image"] != "") {
+    //   nImages.add(u["image"]);
+    // }
     if (u["date"] == nDate && u["time"] == nTime) {
       newNotification.add(u);
+      if (u["image"] != "") {
+        nImages.add(u["image"]);
+      }
     }
   }
-
-  FlutterLocalNotificationsPlugin localNotification =
-      FlutterLocalNotificationsPlugin();
-  var androidInitialize =
-      AndroidInitializationSettings("@drawable/ic_stat_logo");
-  var initializeSetting = InitializationSettings(android: androidInitialize);
-  localNotification.initialize(initializeSetting);
-  var androidDetails = AndroidNotificationDetails(
-      "1", "unze", "local notification",
-      importance: Importance.high);
-  var generalNotificationDetails = NotificationDetails(android: androidDetails);
+  int y = 0;
   int i = 0;
   for (var u in newNotification) {
-    await localNotification.show(
-        i, u["title"], u["description"], generalNotificationDetails);
-    i++;
+    if (u["image"] != "") {
+      await AwesomeNotifications().createNotification(
+          content: NotificationContent(
+              id: i,
+              channelKey: "key1",
+              title: u["title"],
+              body: u["description"],
+              bigPicture: nImages[y],
+              notificationLayout: NotificationLayout.BigPicture));
+      i++;
+      y++;
+    } else {
+      await AwesomeNotifications().createNotification(
+          content: NotificationContent(
+        id: i,
+        channelKey: "key1",
+        title: u["title"],
+        body: u["description"],
+      ));
+      i++;
+    }
   }
 }
 

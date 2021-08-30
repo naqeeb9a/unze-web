@@ -31,8 +31,9 @@ dependencies:
   webview_flutter: ^2.0.12
   url_launcher: ^6.0.9
   android_alarm_manager_plus: ^1.2.0
-  flutter_local_notifications: ^8.1.1+1
+
   http: ^0.13.3
+  awesome_notifications: ^0.0.6+10
 
 dev_dependencies:
   flutter_test:
