@@ -5,8 +5,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
-import 'main_screen.dart';
+import 'package:unze_web_clone_app/location_check.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,10 +35,6 @@ notify() async {
       .get(Uri.parse("https://attendanceapp.genxmtech.com/push/api.php?id=1"));
   var notificationDataBody = json.decode(notificationData.body);
   for (var u in notificationDataBody) {
-    // newNotification.add(u);
-    // if (u["image"] != "") {
-    //   nImages.add(u["image"]);
-    // }
     if (u["date"] == nDate && u["time"] == nTime) {
       newNotification.add(u);
       if (u["image"] != "") {
@@ -99,7 +94,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: primaryColor,
       ),
-      home: MainScreen(),
+      home: LocationCheck(),
     );
   }
 }

@@ -7,7 +7,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
+  String url;
+  MainScreen({required this.url});
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -41,6 +42,7 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
     webView();
     Timer.periodic(
       Duration(milliseconds: 120),
@@ -103,7 +105,7 @@ class _MainScreenState extends State<MainScreen> {
                       width: MediaQuery.of(context).size.width * 1,
                       height: double.infinity,
                       child: WebView(
-                        initialUrl: 'https://unze.com.pk/',
+                        initialUrl: widget.url,
                         javascriptMode: JavascriptMode.unrestricted,
                         onWebViewCreated:
                             (WebViewController webViewController) {
