@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.unze_web_clone_app"
+    package="com.unze.unze"
     android:versionCode="1"
     android:versionName="1.0.0" >
 
@@ -9,6 +9,8 @@
         android:targetSdkVersion="30" />
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -17,15 +19,19 @@
     <queries>
         <package android:name="com.whatsapp" />
     </queries>
-
-    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <!-- Samsung Badge -->
+    <uses-permission android:name="com.sec.android.provider.badge.permission.READ" />
+    <uses-permission android:name="com.sec.android.provider.badge.permission.WRITE" /> <!-- Sony Badge -->
+    <uses-permission android:name="com.sonyericsson.home.permission.BROADCAST_BADGE" /> <!-- HTC Badge -->
+    <uses-permission android:name="com.htc.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="com.htc.launcher.permission.UPDATE_SHORTCUT" />
 
     <application
         android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/launcher_icon"
         android:label="Unze" >
         <activity
-            android:name="com.example.unze_web_clone_app.MainActivity"
+            android:name="com.unze.unze.MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
             android:launchMode="singleTop"
@@ -84,13 +90,42 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
-        <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver" >
+        <!--
+        <service
+            android:name=".services.firebase.FCMService"
+            android:exported="false">
             <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".services.AutoCancelService"
+            android:stopWithTask="true" />
+
+        <meta-data android:name="firebase_messaging_auto_init_enabled" android:value="true" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="me.carda.awesome_notifications.firebase.background_channel"/>
+        -->
+        <receiver android:name="me.carda.awesome_notifications.notifications.broadcastReceivers.DismissedNotificationReceiver" />
+        <receiver android:name="me.carda.awesome_notifications.notifications.broadcastReceivers.ScheduledNotificationReceiver" />
+        <receiver android:name="me.carda.awesome_notifications.notifications.broadcastReceivers.KeepOnTopActionReceiver" />
+        <receiver android:name="me.carda.awesome_notifications.notifications.broadcastReceivers.RefreshNotificationBootReceiver" >
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
                 <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="androidx.media.session.MediaButtonReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
         </receiver>
 
@@ -98,6 +133,20 @@
             android:name="io.flutter.plugins.urllauncher.WebViewActivity"
             android:exported="false"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <activity
+            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+            android:exported="false"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <provider
+            android:name="androidx.lifecycle.ProcessLifecycleOwnerInitializer"
+            android:authorities="com.unze.unze.lifecycle-process"
+            android:exported="false"
+            android:multiprocess="true" />
     </application>
 
 </manifest>

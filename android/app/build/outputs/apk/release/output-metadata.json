@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.example.unze_web_clone_app",
+  "applicationId": "com.unze.unze",
   "variantName": "processReleaseResources",
   "elements": [
     {

@@ -1,4 +1,4 @@
-package com.example.unze_web_clone_app
+package com.unze.unze
 
 import io.flutter.embedding.android.FlutterActivity
 

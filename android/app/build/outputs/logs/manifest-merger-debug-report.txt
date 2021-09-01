@@ -57,7 +57,7 @@ INJECTED from B:\Flutter Programs\M-Tech\unze_web_clone_app\android\app\src\debu
 INJECTED from B:\Flutter Programs\M-Tech\unze_web_clone_app\android\app\src\debug\AndroidManifest.xml:1:1-7:12
 INJECTED from B:\Flutter Programs\M-Tech\unze_web_clone_app\android\app\src\debug\AndroidManifest.xml:1:1-7:12
 	package
-		ADDED from B:\Flutter Programs\M-Tech\unze_web_clone_app\android\app\src\main\AndroidManifest.xml:3:5-45
+		ADDED from B:\Flutter Programs\M-Tech\unze_web_clone_app\android\app\src\main\AndroidManifest.xml:3:5-28
 		INJECTED from B:\Flutter Programs\M-Tech\unze_web_clone_app\android\app\src\main\AndroidManifest.xml
 		INJECTED from B:\Flutter Programs\M-Tech\unze_web_clone_app\android\app\src\debug\AndroidManifest.xml
 	android:versionName
@@ -128,8 +128,8 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\Gu
 	android:label
 		ADDED from B:\Flutter Programs\M-Tech\unze_web_clone_app\android\app\src\main\AndroidManifest.xml:13:9-29
 	android:icon
-		ADDED from B:\Flutter Programs\M-Tech\unze_web_clone_app\android\app\src\main\AndroidManifest.xml:14:9-43
-activity#com.example.unze_web_clone_app.MainActivity
+		ADDED from B:\Flutter Programs\M-Tech\unze_web_clone_app\android\app\src\main\AndroidManifest.xml:14:9-45
+activity#com.unze.unze.MainActivity
 ADDED from B:\Flutter Programs\M-Tech\unze_web_clone_app\android\app\src\main\AndroidManifest.xml:15:9-47:20
 	android:screenOrientation
 		ADDED from B:\Flutter Programs\M-Tech\unze_web_clone_app\android\app\src\main\AndroidManifest.xml:24:13-49

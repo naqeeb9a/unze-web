@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:webview_flutter/platform_interface.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class MainScreen extends StatefulWidget {
@@ -111,6 +112,9 @@ class _MainScreenState extends State<MainScreen> {
                         onWebViewCreated:
                             (WebViewController webViewController) {
                           _controller.complete(webViewController);
+                        },
+                        onWebResourceError: (WebResourceError error) {
+                          CircularProgressIndicator();
                         },
                         onPageStarted: (value) {
                           setState(() {
