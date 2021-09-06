@@ -27,6 +27,7 @@
     <uses-permission android:name="com.htc.launcher.permission.UPDATE_SHORTCUT" />
 
     <application
+        android:name="io.flutter.app.FlutterApplication"
         android:appComponentFactory="androidx.core.app.CoreComponentFactory"
         android:icon="@mipmap/launcher_icon"
         android:label="Unze" >

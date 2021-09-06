@@ -6,6 +6,7 @@
 -keep class dev.fluttercommunity.plus.androidalarmmanager.AlarmBroadcastReceiver { <init>(); }
 -keep class dev.fluttercommunity.plus.androidalarmmanager.AlarmService { <init>(); }
 -keep class dev.fluttercommunity.plus.androidalarmmanager.RebootBroadcastReceiver { <init>(); }
+-keep class io.flutter.app.FlutterApplication { <init>(); }
 -keep class io.flutter.plugins.urllauncher.WebViewActivity { <init>(); }
 -keep class me.carda.awesome_notifications.notifications.broadcastReceivers.DismissedNotificationReceiver { <init>(); }
 -keep class me.carda.awesome_notifications.notifications.broadcastReceivers.KeepOnTopActionReceiver { <init>(); }

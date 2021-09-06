@@ -162,10 +162,6 @@ class _MainScreenState extends State<MainScreen> {
                                     }
                                     _myController.evaluateJavascript(
                                         "document.getElementsByClassName('unze-app-top')[0].style.display='none';");
-                                    _myController.evaluateJavascript(
-                                        "document.getElementsByClassName('h_banner bgp pt10 pb10 fs_14 flex fl_center al_center pr oh show_icon_false')[0].style.display='none';");
-                                    // expression = _myController.evaluateJavascript(
-                                    //     "document.getElementsByClassName('type_toolbar_link type_toolbar_a8d307c8-602b-4638-b500-aed1268cebf9 kalles_toolbar_item')[0].style.display='none';");
                                   });
                                 });
                               }
