@@ -8,6 +8,7 @@ MERGED from B:\Flutter Programs\M-Tech\unze_web_clone_app\android\app\src\main\A
 MERGED from [:geolocator_android] B:\Flutter Programs\M-Tech\unze_web_clone_app\build\geolocator_android\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:awesome_notifications] B:\Flutter Programs\M-Tech\unze_web_clone_app\build\awesome_notifications\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-62:12
 MERGED from [:shared_preferences] B:\Flutter Programs\M-Tech\unze_web_clone_app\build\shared_preferences\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
+MERGED from [:geocoding] B:\Flutter Programs\M-Tech\unze_web_clone_app\build\geocoding\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:android_alarm_manager_plus] B:\Flutter Programs\M-Tech\unze_web_clone_app\build\android_alarm_manager_plus\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:webview_flutter] B:\Flutter Programs\M-Tech\unze_web_clone_app\build\webview_flutter\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:url_launcher] B:\Flutter Programs\M-Tech\unze_web_clone_app\build\url_launcher\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-14:12
@@ -223,6 +224,8 @@ MERGED from [:awesome_notifications] B:\Flutter Programs\M-Tech\unze_web_clone_a
 MERGED from [:awesome_notifications] B:\Flutter Programs\M-Tech\unze_web_clone_app\build\awesome_notifications\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:shared_preferences] B:\Flutter Programs\M-Tech\unze_web_clone_app\build\shared_preferences\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:shared_preferences] B:\Flutter Programs\M-Tech\unze_web_clone_app\build\shared_preferences\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:geocoding] B:\Flutter Programs\M-Tech\unze_web_clone_app\build\geocoding\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:geocoding] B:\Flutter Programs\M-Tech\unze_web_clone_app\build\geocoding\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:android_alarm_manager_plus] B:\Flutter Programs\M-Tech\unze_web_clone_app\build\android_alarm_manager_plus\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:android_alarm_manager_plus] B:\Flutter Programs\M-Tech\unze_web_clone_app\build\android_alarm_manager_plus\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:webview_flutter] B:\Flutter Programs\M-Tech\unze_web_clone_app\build\webview_flutter\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44

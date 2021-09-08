@@ -7349,6 +7349,8 @@ geocoder
 TODO: Add your license here.
 
 --------------------------------------------------------------------------------
+geocoding
+geocoding_platform_interface
 geolocator
 geolocator_android
 geolocator_apple

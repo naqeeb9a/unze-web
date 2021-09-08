@@ -4,7 +4,7 @@ import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:geocoder/geocoder.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -114,13 +114,12 @@ class _LocationCheckState extends State<LocationCheck> {
   getCountryName() async {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-    final coordinates = new Coordinates(position.latitude, position.longitude);
-    var addresses =
-        await Geocoder.local.findAddressesFromCoordinates(coordinates);
-    var first = addresses.first;
+    List<Placemark> placeMarks =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+
     var pref = await SharedPreferences.getInstance();
     if (pref.getString("countryName") == null) {
-      if (first.countryName.toString() == "Pakistan") {
+      if (placeMarks[0].country.toString() == "Pakistan") {
         Navigator.pop(context);
         Navigator.of(context).push(
           MaterialPageRoute(
@@ -129,7 +128,7 @@ class _LocationCheckState extends State<LocationCheck> {
             ),
           ),
         );
-      } else if (first.countryName.toString() == "United States") {
+      } else if (placeMarks[0].country.toString() == "United States") {
         Navigator.pop(context);
         Navigator.of(context).push(
           MaterialPageRoute(
@@ -138,7 +137,7 @@ class _LocationCheckState extends State<LocationCheck> {
             ),
           ),
         );
-      } else if (first.countryName.toString() == "United Kingdom") {
+      } else if (placeMarks[0].country.toString() == "United Kingdom") {
         Navigator.pop(context);
         Navigator.of(context).push(
           MaterialPageRoute(
@@ -182,7 +181,7 @@ class _LocationCheckState extends State<LocationCheck> {
         );
       }
     }
-    return first.countryName;
+    return placeMarks[0].country.toString();
   }
 
   @override
