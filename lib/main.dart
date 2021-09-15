@@ -8,7 +8,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unze_web_clone_app/main_screen.dart';
-
+import 'package:workmanager/workmanager.dart';
 
 void main() async {
   final MaterialColor primaryColor = const MaterialColor(
@@ -27,8 +27,12 @@ void main() async {
     },
   );
   WidgetsFlutterBinding.ensureInitialized();
-  // await AndroidAlarmManager.initialize();
-  // await AndroidAlarmManager.periodic(Duration(minutes: 1), 0, notify);
+  Workmanager().initialize(notify, isInDebugMode: false);
+  Workmanager().registerPeriodicTask(
+    "2",
+    "simplePeriodicTask",
+    frequency: Duration(minutes: 15),
+  );
   runApp(
     MaterialApp(
       title: 'Unze Pakistan',
@@ -41,59 +45,66 @@ void main() async {
   );
 }
 
-notify() async {
-  AwesomeNotifications().initialize('resource://drawable/ic_stat_logo', [
-    NotificationChannel(
-      channelKey: "key1",
-      channelName: "proton coders point",
-      channelDescription: "notification example",
-      enableLights: true,
-      enableVibration: true,
-      importance: NotificationImportance.High,
-    )
-  ]);
-  var nDate = DateTime.now().toString().substring(0, 10);
-  var nTime = DateTime.now().toString().substring(11, 16);
-  print(nDate);
-  print(nTime);
-  var newNotification = [];
-  var nImages = [];
-  var notificationData = await http
-      .get(Uri.parse("https://attendanceapp.genxmtech.com/push/api.php?id=1"));
-  var notificationDataBody = json.decode(notificationData.body);
-  for (var u in notificationDataBody) {
-    if (u["date"] == nDate && u["time"] == nTime) {
-      newNotification.add(u);
-      if (u["image"] != "") {
-        nImages.add(u["image"]);
+notify() {
+  Workmanager().executeTask((task, inputData) async {
+    AwesomeNotifications().initialize('resource://drawable/ic_stat_logo', [
+      NotificationChannel(
+        channelKey: "key1",
+        channelName: "proton coders point",
+        channelDescription: "notification example",
+        enableLights: true,
+        enableVibration: true,
+        importance: NotificationImportance.High,
+      )
+    ]);
+    var nDate = DateTime.now().toString().substring(0, 10);
+    var newNotification = [];
+    var nImages = [];
+    var notificationData = await http.get(Uri.parse(
+        "https://shopify.unze.com.pk/api/api.php?getPUSHNotifications"));
+    var notificationDataBody = json.decode(notificationData.body);
+    for (var u in notificationDataBody) {
+      if (u["date"] == nDate && u["status"] == "0") {
+        newNotification.add(u);
+        if (u["image"] != "") {
+          nImages.add(u["image"]);
+        }
       }
     }
-  }
-  int y = 0;
-  int i = 0;
-  for (var u in newNotification) {
-    if (u["image"] != "") {
-      await AwesomeNotifications().createNotification(
-          content: NotificationContent(
-              id: i,
-              channelKey: "key1",
-              title: u["title"],
-              body: u["description"],
-              bigPicture: nImages[y],
-              notificationLayout: NotificationLayout.BigPicture));
-      i++;
-      y++;
-    } else {
-      await AwesomeNotifications().createNotification(
-          content: NotificationContent(
-        id: i,
-        channelKey: "key1",
-        title: u["title"],
-        body: u["description"],
-      ));
-      i++;
+    int y = 0;
+    int i = 0;
+    for (var u in newNotification) {
+      if (u["image"] != "") {
+        await AwesomeNotifications().createNotification(
+            content: NotificationContent(
+                id: i,
+                channelKey: "key1",
+                title: u["title"],
+                body: u["description"],
+                bigPicture: nImages[y],
+                notificationLayout: NotificationLayout.BigPicture));
+        i++;
+        y++;
+      } else {
+        await AwesomeNotifications().createNotification(
+            content: NotificationContent(
+          id: i,
+          channelKey: "key1",
+          title: u["title"],
+          body: u["description"],
+        ));
+        i++;
+      }
+      u["status"] = "1";
+      await http.post(Uri.parse("https://shopify.unze.com.pk/api/api.php"),
+          body: {
+            "postPushNotification": "1",
+            "id": u["id"],
+            "status": u["status"]
+          });
     }
-  }
+    return Future.value(true);
+  });
 }
 
 class LocationCheck extends StatefulWidget {
@@ -186,6 +197,7 @@ class _LocationCheckState extends State<LocationCheck> {
 
   @override
   void initState() {
+    // ignore: todo
     // TODO: implement initState
     super.initState();
     getCountryName();
