@@ -27,8 +27,8 @@ void main() async {
     },
   );
   WidgetsFlutterBinding.ensureInitialized();
-  await AndroidAlarmManager.initialize();
-  await AndroidAlarmManager.periodic(Duration(minutes: 1), 0, notify);
+  // await AndroidAlarmManager.initialize();
+  // await AndroidAlarmManager.periodic(Duration(minutes: 1), 0, notify);
   runApp(
     MaterialApp(
       title: 'Unze Pakistan',
