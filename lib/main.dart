@@ -86,11 +86,11 @@ notify() async {
     } else {
       await AwesomeNotifications().createNotification(
           content: NotificationContent(
-        id: i,
-        channelKey: "key1",
-        title: u["title"],
-        body: u["description"],
-      ));
+            id: i,
+            channelKey: "key1",
+            title: u["title"],
+            body: u["description"],
+          ));
       i++;
     }
   }
@@ -115,7 +115,7 @@ class _LocationCheckState extends State<LocationCheck> {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     List<Placemark> placeMarks =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
+    await placemarkFromCoordinates(position.latitude, position.longitude);
 
     var pref = await SharedPreferences.getInstance();
     if (pref.getString("countryName") == null) {
@@ -123,27 +123,30 @@ class _LocationCheckState extends State<LocationCheck> {
         Navigator.pop(context);
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => MainScreen(
-              url: 'https://unze.com.pk/',
-            ),
+            builder: (context) =>
+                MainScreen(
+                  url: 'https://unze.com.pk/',
+                ),
           ),
         );
       } else if (placeMarks[0].country.toString() == "United States") {
         Navigator.pop(context);
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => MainScreen(
-              url: 'https://www.unze.us/',
-            ),
+            builder: (context) =>
+                MainScreen(
+                  url: 'https://www.unze.us/',
+                ),
           ),
         );
       } else if (placeMarks[0].country.toString() == "United Kingdom") {
         Navigator.pop(context);
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => MainScreen(
-              url: 'https://www.unze.co.uk/',
-            ),
+            builder: (context) =>
+                MainScreen(
+                  url: 'https://www.unze.co.uk/',
+                ),
           ),
         );
       } else {
@@ -156,27 +159,30 @@ class _LocationCheckState extends State<LocationCheck> {
         Navigator.pop(context);
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => MainScreen(
-              url: 'https://unze.com.pk/',
-            ),
+            builder: (context) =>
+                MainScreen(
+                  url: 'https://unze.com.pk/',
+                ),
           ),
         );
       } else if (pref.getString("countryName").toString() == "United States") {
         Navigator.pop(context);
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => MainScreen(
-              url: 'https://www.unze.us/',
-            ),
+            builder: (context) =>
+                MainScreen(
+                  url: 'https://www.unze.us/',
+                ),
           ),
         );
       } else if (pref.getString("countryName").toString() == "United Kingdom") {
         Navigator.pop(context);
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => MainScreen(
-              url: 'https://www.unze.co.uk/',
-            ),
+            builder: (context) =>
+                MainScreen(
+                  url: 'https://www.unze.co.uk/',
+                ),
           ),
         );
       }
@@ -197,92 +203,107 @@ class _LocationCheckState extends State<LocationCheck> {
       child: Scaffold(
         body: name != "none"
             ? Center(
-                child: CircularProgressIndicator(),
-              )
+          child: CircularProgressIndicator(),
+        )
             : Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: MediaQuery
+                    .of(context)
+                    .size
+                    .height * .08,
+              ),
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: MediaQuery.of(context).size.height * .08,
+                  Text(
+                    "Select Country",
+                    style: TextStyle(
+                      color: Color(0xff5d443c),
+                      fontSize: MediaQuery
+                          .of(context)
+                          .size
+                          .width * .08,
+                      fontWeight: FontWeight.bold,
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Select Country",
-                          style: TextStyle(
-                            color: Color(0xff5d443c),
-                            fontSize: MediaQuery.of(context).size.width * .08,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          maxLines: 1,
-                        ),
-                      ],
-                    ),
+                    maxLines: 1,
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: MediaQuery.of(context).size.height * .01,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            saveCountry("Pakistan");
-                          },
-                          child: flagButton(
-                            context,
-                            "Pakistan",
-                            "assets/pkr.jpg",
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: MediaQuery.of(context).size.height * .01,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            saveCountry("United Kingdom");
-                          },
-                          child: flagButton(
-                            context,
-                            "United Kingdom",
-                            "assets/uk.jpg",
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: MediaQuery.of(context).size.height * .01,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            saveCountry("United States");
-                          },
-                          child: flagButton(
-                            context,
-                            "United States",
-                            "assets/us.jpg",
-                          ),
-                        ),
-                      ],
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: MediaQuery
+                    .of(context)
+                    .size
+                    .height * .01,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      saveCountry("Pakistan");
+                    },
+                    child: flagButton(
+                      context,
+                      "Pakistan",
+                      "assets/pkr.jpg",
                     ),
                   ),
                 ],
               ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: MediaQuery
+                    .of(context)
+                    .size
+                    .height * .01,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      saveCountry("United Kingdom");
+                    },
+                    child: flagButton(
+                      context,
+                      "United Kingdom",
+                      "assets/uk.jpg",
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: MediaQuery
+                    .of(context)
+                    .size
+                    .height * .01,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      saveCountry("United States");
+                    },
+                    child: flagButton(
+                      context,
+                      "United States",
+                      "assets/us.jpg",
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -292,8 +313,14 @@ Widget flagButton(BuildContext context, String title, image) {
   return Stack(
     children: [
       Container(
-        width: MediaQuery.of(context).size.width * .6,
-        height: MediaQuery.of(context).size.height * .08,
+        width: MediaQuery
+            .of(context)
+            .size
+            .width * .6,
+        height: MediaQuery
+            .of(context)
+            .size
+            .height * .08,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12.0),
           image: DecorationImage(
@@ -309,14 +336,23 @@ Widget flagButton(BuildContext context, String title, image) {
         ),
       ),
       Container(
-        width: MediaQuery.of(context).size.width * .6,
-        height: MediaQuery.of(context).size.height * .08,
+        width: MediaQuery
+            .of(context)
+            .size
+            .width * .6,
+        height: MediaQuery
+            .of(context)
+            .size
+            .height * .08,
         child: Center(
           child: Text(
             title,
             style: TextStyle(
               color: Colors.white,
-              fontSize: MediaQuery.of(context).size.width * .06,
+              fontSize: MediaQuery
+                  .of(context)
+                  .size
+                  .width * .06,
               fontWeight: FontWeight.bold,
               shadows: <Shadow>[
                 Shadow(

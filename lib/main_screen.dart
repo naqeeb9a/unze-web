@@ -52,7 +52,7 @@ class _MainScreenState extends State<MainScreen> {
     webView();
     Timer.periodic(
       Duration(milliseconds: 120),
-      (Timer t) => checkLink(),
+          (Timer t) => checkLink(),
     );
 
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
@@ -119,79 +119,82 @@ class _MainScreenState extends State<MainScreen> {
           backgroundColor: Colors.white,
           body: netConnection == true
               ? IndexedStack(
-                  index: position,
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width * 1,
-                      height: double.infinity,
-                      child: WebView(
-                        initialUrl: widget.url,
-                        javascriptMode: JavascriptMode.unrestricted,
-                        onWebViewCreated:
-                            (WebViewController webViewController) {
-                          _controller.complete(webViewController);
-                          _myController = webViewController;
-                        },
-                        onWebResourceError: (WebResourceError webError) {
-                          print(
-                              "faileeeeeddd==========-=-==================-----");
-                          print(webError.failingUrl);
-                          if (webError.failingUrl == "tel:042111118693" ||
-                              webError.failingUrl ==
-                                  "tel:042%20111%2011%208693" ||
-                              webError.failingUrl ==
-                                  "mailto:customersupport@unze.com.pk") {
+            index: position,
+            children: [
+              Container(
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width * 1,
+                height: double.infinity,
+                child: WebView(
+                  initialUrl: widget.url,
+                  javascriptMode: JavascriptMode.unrestricted,
+                  onWebViewCreated:
+                      (WebViewController webViewController) {
+                    _controller.complete(webViewController);
+                    _myController = webViewController;
+                  },
+                  onWebResourceError: (WebResourceError webError) {
+                    print(
+                        "faileeeeeddd==========-=-==================-----");
+                    print(webError.failingUrl);
+                    if (webError.failingUrl == "tel:042111118693" ||
+                        webError.failingUrl ==
+                            "tel:042%20111%2011%208693" ||
+                        webError.failingUrl ==
+                            "mailto:customersupport@unze.com.pk") {
+                      setState(() {
+                        position = 1;
+                      });
+                    } else {
+                      setState(() {
+                        netConnection = false;
+                      });
+                    }
+                  },
+                  onPageStarted: (initialUrl) {
+                    try {
+                      setState(() {
+                        position = 1;
+                        for (int i = 1; i <= 10; i++) {
+                          Future.delayed(Duration(seconds: i), () {
                             setState(() {
-                              position = 1;
-                            });
-                          } else {
-                            setState(() {
-                              netConnection = false;
-                            });
-                          }
-                        },
-                        onPageStarted: (initialUrl) {
-                          try {
-                            setState(() {
-                              position = 1;
-                              for (int i = 1; i <= 10; i++) {
-                                Future.delayed(Duration(seconds: i), () {
-                                  setState(() {
-                                    if (i > 4) {
-                                      position = 0;
-                                    }
-                                    _myController.evaluateJavascript(
-                                        "document.getElementsByClassName('unze-app-top')[0].style.display='none';");
-                                  });
-                                });
+                              if (i > 4) {
+                                position = 0;
                               }
+                              _myController.evaluateJavascript(
+                                  "document.getElementsByClassName('unze-app-top')[0].style.display='none';");
                             });
-                          } catch (e) {}
-                        },
-                        onPageFinished: (initialUrl) {
-                          try {
-                            _myController.evaluateJavascript(
-                                "document.getElementsByClassName('unze-app-top')[0].style.display='none';");
-                            setState(() {
-                              position = 0;
-                            });
-                          } catch (e) {}
-                        },
-                      ),
-                    ),
-                    Container(
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          color: Color(0xff5d443c),
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-              : pageError(
-                  context,
-                  webView,
+                          });
+                        }
+                      });
+                    } catch (e) {}
+                  },
+                  onPageFinished: (initialUrl) {
+                    try {
+                      _myController.evaluateJavascript(
+                          "document.getElementsByClassName('unze-app-top')[0].style.display='none';");
+                      setState(() {
+                        position = 0;
+                      });
+                    } catch (e) {}
+                  },
                 ),
+              ),
+              Container(
+                child: Center(
+                  child: CircularProgressIndicator(
+                    color: Color(0xff5d443c),
+                  ),
+                ),
+              ),
+            ],
+          )
+              : pageError(
+            context,
+            webView,
+          ),
         ),
       ),
     );
@@ -200,8 +203,14 @@ class _MainScreenState extends State<MainScreen> {
 
 Widget pageError(context, webView) {
   return Container(
-    width: MediaQuery.of(context).size.width * 1,
-    height: MediaQuery.of(context).size.height * 1,
+    width: MediaQuery
+        .of(context)
+        .size
+        .width * 1,
+    height: MediaQuery
+        .of(context)
+        .size
+        .height * 1,
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -211,7 +220,10 @@ Widget pageError(context, webView) {
             Icon(
               Icons.wifi_off_rounded,
               color: Color(0xff5d443c),
-              size: MediaQuery.of(context).size.width * .2,
+              size: MediaQuery
+                  .of(context)
+                  .size
+                  .width * .2,
             ),
           ],
         ),
@@ -221,7 +233,10 @@ Widget pageError(context, webView) {
             Text(
               "No Internet Connection!!",
               style: TextStyle(
-                fontSize: MediaQuery.of(context).size.width * .07,
+                fontSize: MediaQuery
+                    .of(context)
+                    .size
+                    .width * .07,
                 color: Color(0xff5d443c),
               ),
             ),
@@ -239,22 +254,37 @@ Widget pageError(context, webView) {
                 );
               },
               child: Container(
-                width: MediaQuery.of(context).size.width * .4,
-                height: MediaQuery.of(context).size.height * .07,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width * .4,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height * .07,
                 decoration: BoxDecoration(
                   color: Color(0xff5d443c),
                   borderRadius: BorderRadius.circular(
-                    MediaQuery.of(context).size.width * .02,
+                    MediaQuery
+                        .of(context)
+                        .size
+                        .width * .02,
                   ),
                 ),
                 margin: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * .02,
+                  top: MediaQuery
+                      .of(context)
+                      .size
+                      .height * .02,
                 ),
                 child: Center(
                   child: Text(
                     "Reload!",
                     style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.width * .06,
+                      fontSize: MediaQuery
+                          .of(context)
+                          .size
+                          .width * .06,
                       color: Colors.white,
                     ),
                   ),
