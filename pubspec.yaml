@@ -31,11 +31,11 @@ dependencies:
   http: ^0.13.3
   webview_flutter: ^2.0.12
   url_launcher: ^6.0.9
-  android_alarm_manager_plus: ^1.2.0
   awesome_notifications: ^0.0.6+10
   geolocator: ^7.6.0
   geocoding: ^2.0.1
   shared_preferences: ^2.0.6
+  workmanager: ^0.4.1
 
 
 dev_dependencies:
