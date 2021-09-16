@@ -61,8 +61,9 @@ class _MainScreenState extends State<MainScreen> {
     try {
       WebViewController webViewController = await _controller.future;
       var currentUrl = await webViewController.currentUrl();
-
+      print("\n\n\n\n\n link" + currentUrl.toString());
       currentUrl = currentUrl.toString().replaceAll("%20", "");
+
       if (currentUrl.toString().contains("tel:042111118693")) {
         launch("tel://03353961635");
         bool canNavigate = await webViewController.canGoBack();
@@ -131,21 +132,21 @@ class _MainScreenState extends State<MainScreen> {
                           _controller.complete(webViewController);
                           _myController = webViewController;
                         },
-                        onWebResourceError: (WebResourceError webError) {
-                          if (webError.failingUrl == "tel:042111118693" ||
-                              webError.failingUrl ==
-                                  "tel:042%20111%2011%208693" ||
-                              webError.failingUrl ==
-                                  "mailto:customersupport@unze.com.pk") {
-                            setState(() {
-                              position = 1;
-                            });
-                          } else {
-                            setState(() {
-                              netConnection = false;
-                            });
-                          }
-                        },
+                        // onWebResourceError: (WebResourceError webError) {
+                        //   if (webError.failingUrl == "tel:042111118693" ||
+                        //       webError.failingUrl ==
+                        //           "tel:042%20111%2011%208693" ||
+                        //       webError.failingUrl ==
+                        //           "mailto:customersupport@unze.com.pk") {
+                        //     setState(() {
+                        //       position = 1;
+                        //     });
+                        //   } else {
+                        //     setState(() {
+                        //       netConnection = false;
+                        //     });
+                        //   }
+                        // },
                         onPageStarted: (initialUrl) {
                           try {
                             setState(() {
