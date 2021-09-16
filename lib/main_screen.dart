@@ -28,7 +28,6 @@ class _MainScreenState extends State<MainScreen> {
   int position = 1;
 
   Future<dynamic> webView() async {
-    print(_controller);
     netConnection = false;
     try {
       final net = await InternetAddress.lookup('example.com');
@@ -133,9 +132,6 @@ class _MainScreenState extends State<MainScreen> {
                           _myController = webViewController;
                         },
                         onWebResourceError: (WebResourceError webError) {
-                          print(
-                              "faileeeeeddd==========-=-==================-----");
-                          print(webError.failingUrl);
                           if (webError.failingUrl == "tel:042111118693" ||
                               webError.failingUrl ==
                                   "tel:042%20111%2011%208693" ||
