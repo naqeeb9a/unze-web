@@ -57,6 +57,7 @@ notify() async {
       importance: NotificationImportance.High,
     )
   ]);
+
   var nDate = DateTime.now().toString().substring(0, 10);
   var nTime = DateTime.now().toString().substring(11, 16);
   var newNotification = [];
@@ -69,7 +70,6 @@ notify() async {
     var one = format.parse(nTime);
     var two = format.parse(u["time"]);
     var pTime = one.difference(two);
-
     if (pTime.toString().substring(2, 4).contains(":") ||
         pTime.toString().substring(0, 1) != "0") {
     } else {
@@ -89,13 +89,14 @@ notify() async {
   for (var u in newNotification) {
     if (u["image"] != "") {
       await AwesomeNotifications().createNotification(
-          content: NotificationContent(
-              id: i,
-              channelKey: "key1",
-              title: u["title"],
-              body: u["description"],
-              bigPicture: nImages[y],
-              notificationLayout: NotificationLayout.BigPicture));
+        content: NotificationContent(
+            id: i,
+            channelKey: "key1",
+            title: u["title"],
+            body: u["description"],
+            bigPicture: nImages[y],
+            notificationLayout: NotificationLayout.BigPicture),
+      );
       i++;
       y++;
     } else {
@@ -201,7 +202,6 @@ class _LocationCheckState extends State<LocationCheck> {
 
   @override
   void initState() {
-    // ignore: todo
     // TODO: implement initState
     super.initState();
     getCountryName();
