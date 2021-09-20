@@ -135,22 +135,31 @@ class _MainScreenState extends State<MainScreen> {
                           _myController = webViewController;
                         },
                         onWebResourceError: (WebResourceError webError) {
-                          if (webError.failingUrl == "tel:042111118693" ||
-                              webError.failingUrl ==
-                                  "tel:042%20111%2011%208693" ||
-                              webError.failingUrl ==
-                                  "mailto:customersupport@unze.com.pk") {
-                            setState(() {
-                              position = 1;
-                            });
-                          } else {
-                            setState(() {
-                              netConnection = false;
-                            });
-                          }
+                          if (Platform.isAndroid) {
+                            if (webError.failingUrl == "tel:042111118693" ||
+                                webError.failingUrl ==
+                                    "tel:042%20111%2011%208693" ||
+                                webError.failingUrl ==
+                                    "mailto:customersupport@unze.com.pk") {
+                              setState(() {
+                                position = 1;
+                              });
+                            } else {
+                              setState(() {
+                                netConnection = false;
+                              });
+                            }
+                          } else if (Platform.isIOS) {}
                         },
                         onPageStarted: (initialUrl) {
                           if (Platform.isIOS) {
+                            Future.delayed(Duration(seconds: 2), () {
+                              setState(() {
+                                position = 0;
+                                _myController.evaluateJavascript(
+                                    "document.getElementsByClassName('unze-app-top')[0].style.display='none';");
+                              });
+                            });
                             initialUrl =
                                 initialUrl.toString().replaceAll("%20", "");
                             if (initialUrl == "tel:042111118693") {
@@ -159,24 +168,24 @@ class _MainScreenState extends State<MainScreen> {
                                 "mailto:customersupport@unze.com.pk")) {
                               launch("mailto:customersupport@unze.com.pk");
                             }
-                          } else if (Platform.isAndroid) {}
-
-                          try {
-                            setState(() {
-                              position = 1;
-                              for (int i = 1; i <= 10; i++) {
-                                Future.delayed(Duration(seconds: i), () {
-                                  setState(() {
-                                    if (i > 4) {
-                                      position = 0;
-                                    }
-                                    _myController.evaluateJavascript(
-                                        "document.getElementsByClassName('unze-app-top')[0].style.display='none';");
+                          } else if (Platform.isAndroid) {
+                            try {
+                              setState(() {
+                                position = 1;
+                                for (int i = 1; i <= 10; i++) {
+                                  Future.delayed(Duration(seconds: i), () {
+                                    setState(() {
+                                      if (i > 4) {
+                                        position = 0;
+                                      }
+                                      _myController.evaluateJavascript(
+                                          "document.getElementsByClassName('unze-app-top')[0].style.display='none';");
+                                    });
                                   });
-                                });
-                              }
-                            });
-                          } catch (e) {}
+                                }
+                              });
+                            } catch (e) {}
+                          }
                         },
                         onPageFinished: (initialUrl) {
                           try {
