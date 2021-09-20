@@ -49,57 +49,56 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
 
     webView();
-    Timer.periodic(
-      Duration(milliseconds: 120),
-      (Timer t) => checkLink(),
-    );
+    // Timer.periodic(
+    //   Duration(milliseconds: 120),
+    //   (Timer t) => checkLink(),
+    // );
 
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
   }
 
-  checkLink() async {
-    try {
-      WebViewController webViewController = await _controller.future;
-      var currentUrl = await webViewController.currentUrl();
-      print("\n\n\n\n\n link" + currentUrl.toString());
-      currentUrl = currentUrl.toString().replaceAll("%20", "");
-
-      if (currentUrl.toString().contains("tel:042111118693")) {
-        launch("tel://03353961635");
-        bool canNavigate = await webViewController.canGoBack();
-        if (canNavigate) {
-          webViewController.goBack();
-        }
-        setState(() {
-          position = 0;
-        });
-      } else if (currentUrl
-          .toString()
-          .contains("mailto:customersupport@unze.com.pk")) {
-        launch("mailto:customersupport@unze.com.pk");
-        bool canNavigate = await webViewController.canGoBack();
-        if (canNavigate) {
-          webViewController.goBack();
-        }
-        setState(() {
-          position = 0;
-        });
-      } else if (currentUrl ==
-          "https://api.whatsapp.com/send/?phone=923458963222&text&app_absent=0") {
-        String urlWW = "whatsapp://send?phone=+923458963222&text=Hi";
-        if (await canLaunch(urlWW)) {
-          launch(urlWW);
-          bool canNavigate = await webViewController.canGoBack();
-          if (canNavigate) {
-            webViewController.goBack();
-          }
-          setState(() {
-            position = 0;
-          });
-        }
-      }
-    } catch (e) {}
-  }
+  // checkLink() async {
+  //   try {
+  //     WebViewController webViewController = await _controller.future;
+  //     var currentUrl = await webViewController.currentUrl();
+  //     print("\n\n\n\n\n link" + currentUrl.toString());
+  //     currentUrl = currentUrl.toString().replaceAll("%20", "");
+  //     if (currentUrl == "tel:042111118693") {
+  //       launch("tel://03353961635");
+  //       bool canNavigate = await webViewController.canGoBack();
+  //       if (canNavigate) {
+  //         webViewController.goBack();
+  //       }
+  //       setState(() {
+  //         position = 0;
+  //       });
+  //     } else if (currentUrl
+  //         .toString()
+  //         .contains("mailto:customersupport@unze.com.pk")) {
+  //       launch("mailto:customersupport@unze.com.pk");
+  //       bool canNavigate = await webViewController.canGoBack();
+  //       if (canNavigate) {
+  //         webViewController.goBack();
+  //       }
+  //       setState(() {
+  //         position = 0;
+  //       });
+  //     } else if (currentUrl ==
+  //         "https://api.whatsapp.com/send/?phone=923458963222&text&app_absent=0") {
+  //       String urlWW = "whatsapp://send?phone=+923458963222&text=Hi";
+  //       if (await canLaunch(urlWW)) {
+  //         launch(urlWW);
+  //         bool canNavigate = await webViewController.canGoBack();
+  //         if (canNavigate) {
+  //           webViewController.goBack();
+  //         }
+  //         setState(() {
+  //           position = 0;
+  //         });
+  //       }
+  //     }
+  //   } catch (e) {}
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -132,38 +131,48 @@ class _MainScreenState extends State<MainScreen> {
                           _controller.complete(webViewController);
                           _myController = webViewController;
                         },
-                        // onWebResourceError: (WebResourceError webError) {
-                        //   if (webError.failingUrl == "tel:042111118693" ||
-                        //       webError.failingUrl ==
-                        //           "tel:042%20111%2011%208693" ||
-                        //       webError.failingUrl ==
-                        //           "mailto:customersupport@unze.com.pk") {
-                        //     setState(() {
-                        //       position = 1;
-                        //     });
-                        //   } else {
-                        //     setState(() {
-                        //       netConnection = false;
-                        //     });
-                        //   }
-                        // },
+                        onWebResourceError: (WebResourceError webError) {
+                          // if (webError.failingUrl == "tel:042111118693" ||
+                          //     webError.failingUrl ==
+                          //         "tel:042%20111%2011%208693" ||
+                          //     webError.failingUrl ==
+                          //         "mailto:customersupport@unze.com.pk") {
+                          //   setState(() {
+                          //     position = 1;
+                          //   });
+                          // } else {
+                          //   setState(() {
+                          //     netConnection = false;
+                          //   });
+                          // }
+                        },
                         onPageStarted: (initialUrl) {
-                          try {
-                            setState(() {
-                              position = 1;
-                              for (int i = 1; i <= 10; i++) {
-                                Future.delayed(Duration(seconds: i), () {
-                                  setState(() {
-                                    if (i > 4) {
-                                      position = 0;
-                                    }
-                                    _myController.evaluateJavascript(
-                                        "document.getElementsByClassName('unze-app-top')[0].style.display='none';");
-                                  });
-                                });
-                              }
-                            });
-                          } catch (e) {}
+                          initialUrl =
+                              initialUrl.toString().replaceAll("%20", "");
+                          if (initialUrl == "tel:042111118693") {
+                            launch("tel://042111118693");
+                          } else if (initialUrl
+                              .toString()
+                              .contains("mailto:customersupport@unze.com.pk")) {
+                            launch("mailto:customersupport@unze.com.pk");
+                          }
+
+                          // try {
+                          //   setState(() {
+                          //     position = 1;
+                          //     for (int i = 1; i <= 10; i++) {
+                          //       Future.delayed(Duration(seconds: i), () {
+                          //         setState(() {
+                          //           if (i > 4) {
+                          //             position = 0;
+                          //           }
+                          //           _myController.evaluateJavascript(
+                          //               "document.getElementsByClassName('unze-app-top')[0].style.display='none';");
+                          //         });
+                          //       });
+                          //     }
+                          //   });
+                          // } catch (e) {}
                         },
                         onPageFinished: (initialUrl) {
                           try {

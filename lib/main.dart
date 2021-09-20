@@ -28,12 +28,13 @@ void main() async {
     },
   );
   WidgetsFlutterBinding.ensureInitialized();
-  Workmanager().initialize(notify, isInDebugMode: false);
-  Workmanager().registerPeriodicTask(
-    "2",
-    "simplePeriodicTask",
-    frequency: Duration(minutes: 15),
-  );
+  // Workmanager().initialize(notify, isInDebugMode: false);
+  // Workmanager().registerPeriodicTask(
+  //   "2",
+  //   "simplePeriodicTask",
+  //   frequency: Duration(minutes: 15),
+  // );
+  notify();
   runApp(
     MaterialApp(
       title: 'Unze Pakistan',
@@ -58,6 +59,15 @@ notify() async {
     )
   ]);
 
+  await AwesomeNotifications().createNotification(
+    content: NotificationContent(
+      id: 15,
+      channelKey: "key1",
+      title: "title",
+      body: "description",
+    ),
+  );
+
   var nDate = DateTime.now().toString().substring(0, 10);
   var nTime = DateTime.now().toString().substring(11, 16);
   var newNotification = [];
@@ -65,6 +75,7 @@ notify() async {
   var notificationData = await http.get(Uri.parse(
       "https://shopify.unze.com.pk/api/api.php?getPUSHNotifications"));
   var notificationDataBody = json.decode(notificationData.body);
+
   for (var u in notificationDataBody) {
     var format = DateFormat("HH:mm");
     var one = format.parse(nTime);
@@ -204,6 +215,7 @@ class _LocationCheckState extends State<LocationCheck> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
     getCountryName();
   }
 
