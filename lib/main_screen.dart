@@ -67,7 +67,7 @@ class _MainScreenState extends State<MainScreen> {
 
       currentUrl = currentUrl.toString().replaceAll("%20", "");
       if (currentUrl == "tel:042111118693") {
-        launch("tel://03353961635");
+        launch("tel:042111118693");
         bool canNavigate = await webViewController.canGoBack();
         if (canNavigate) {
           webViewController.goBack();

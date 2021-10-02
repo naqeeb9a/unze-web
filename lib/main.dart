@@ -28,12 +28,12 @@ void main() async {
     },
   );
   WidgetsFlutterBinding.ensureInitialized();
-  // Workmanager().initialize(notify, isInDebugMode: false);
-  // Workmanager().registerPeriodicTask(
-  //   "2",
-  //   "simplePeriodicTask",
-  //   frequency: Duration(minutes: 15),
-  // );
+  Workmanager().initialize(notify, isInDebugMode: false);
+  Workmanager().registerPeriodicTask(
+    "2",
+    "simplePeriodicTask",
+    frequency: Duration(minutes: 15),
+  );
   notify();
   runApp(
     MaterialApp(
@@ -58,15 +58,6 @@ notify() async {
       importance: NotificationImportance.High,
     )
   ]);
-
-  await AwesomeNotifications().createNotification(
-    content: NotificationContent(
-      id: 15,
-      channelKey: "key1",
-      title: "title",
-      body: "description",
-    ),
-  );
 
   var nDate = DateTime.now().toString().substring(0, 10);
   var nTime = DateTime.now().toString().substring(11, 16);
