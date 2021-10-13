@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:cupertino_back_gesture/cupertino_back_gesture.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
@@ -9,7 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unze_web_clone_app/main_screen.dart';
-import 'package:workmanager/workmanager.dart';
+// import 'package:workmanager/workmanager.dart';
 
 void main() async {
   final MaterialColor primaryColor = const MaterialColor(
@@ -41,6 +42,13 @@ void main() async {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: primaryColor,
+        pageTransitionsTheme: PageTransitionsTheme(
+          builders: {
+            TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+            TargetPlatform.iOS:
+                CupertinoPageTransitionsBuilderCustomBackGestureWidth(),
+          },
+        ),
       ),
       home: LocationCheck(),
     ),

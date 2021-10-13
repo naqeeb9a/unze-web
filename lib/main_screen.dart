@@ -105,18 +105,29 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        WebViewController webViewController = await _controller.future;
-        var currentUrl = await webViewController.currentUrl();
-        if (currentUrl == "https://unze.com.pk/") {
-          return true;
-        } else {
-          await webViewController.goBack();
+    return SafeArea(
+      child: WillPopScope(
+        onWillPop: ()async {
+          print("aaa");
           return false;
-        }
-      },
-      child: SafeArea(
+        },
+
+        // onWillPop: () async {
+        //   if (Navigator.of(context).userGestureInProgress) {
+        //     print("object");
+        //     return true;
+        //   } else {
+        //     print("object1");
+        //     return false;
+        //   }
+        // },
+
+
+        // onWillPop: () async {
+        //   WebViewController c = await _controller.future;
+        //   await c.goBack();
+        //   return false;
+        // },
         child: Scaffold(
           backgroundColor: Colors.white,
           body: netConnection == true
@@ -131,7 +142,9 @@ class _MainScreenState extends State<MainScreen> {
                         javascriptMode: JavascriptMode.unrestricted,
                         onWebViewCreated:
                             (WebViewController webViewController) {
-                          _controller.complete(webViewController);
+                          if (!_controller.isCompleted) {
+                            _controller.complete(webViewController);
+                          } else {}
                           _myController = webViewController;
                         },
                         onWebResourceError: (WebResourceError webError) {
@@ -153,13 +166,17 @@ class _MainScreenState extends State<MainScreen> {
                         },
                         onPageStarted: (initialUrl) {
                           if (Platform.isIOS) {
-                            Future.delayed(Duration(seconds: 2), () {
-                              setState(() {
-                                position = 0;
-                                _myController.evaluateJavascript(
-                                    "document.getElementsByClassName('unze-app-top')[0].style.display='none';");
+                            setState(() {
+                              position = 1;
+                              Future.delayed(Duration(seconds: 2), () {
+                                setState(() {
+                                  position = 0;
+                                  _myController.evaluateJavascript(
+                                      "document.getElementsByClassName('unze-app-top')[0].style.display='none';");
+                                });
                               });
                             });
+
                             initialUrl =
                                 initialUrl.toString().replaceAll("%20", "");
                             if (initialUrl == "tel:042111118693") {
