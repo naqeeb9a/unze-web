@@ -107,7 +107,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: WillPopScope(
-        onWillPop: ()async {
+        onWillPop: () async {
           print("aaa");
           return false;
         },
@@ -121,7 +121,6 @@ class _MainScreenState extends State<MainScreen> {
         //     return false;
         //   }
         // },
-
 
         // onWillPop: () async {
         //   WebViewController c = await _controller.future;
@@ -168,7 +167,7 @@ class _MainScreenState extends State<MainScreen> {
                           if (Platform.isIOS) {
                             setState(() {
                               position = 1;
-                              Future.delayed(Duration(seconds: 2), () {
+                              Future.delayed(Duration(seconds: 5), () {
                                 setState(() {
                                   position = 0;
                                   _myController.evaluateJavascript(

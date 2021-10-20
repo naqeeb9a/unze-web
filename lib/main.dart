@@ -27,13 +27,26 @@ void main() async {
       900: const Color(0xff5d443c),
     },
   );
+
   WidgetsFlutterBinding.ensureInitialized();
   Workmanager().initialize(notify, isInDebugMode: false);
+  // Workmanager().registerOneOffTask(
+  //   "1",
+  //   "simpleTaskKey",
+  //   inputData: <String, dynamic>{
+  //     'int': 1,
+  //     'bool': true,
+  //     'double': 1.0,
+  //     'string': 'string',
+  //     'array': [1, 2, 3],
+  //   },
+  // );
   Workmanager().registerPeriodicTask(
     "2",
     "simplePeriodicTask",
     frequency: Duration(minutes: 15),
   );
+  // callbackDispatcher();
   notify();
   runApp(
     MaterialApp(
@@ -52,6 +65,19 @@ void main() async {
     ),
   );
 }
+
+// void callbackDispatcher() {
+//   stderr.writeln("in");
+//   Workmanager().executeTask((task, inputData) {
+//     switch (task) {
+//       case Workmanager.iOSBackgroundTask:
+//         stderr.writeln("The iOS background fetch was triggered");
+//         break;
+//     }
+//     bool success = true;
+//     return Future.value(success);
+//   });
+// }
 
 notify() async {
   AwesomeNotifications().initialize('resource://drawable/ic_stat_logo', [
