@@ -106,128 +106,131 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: WillPopScope(
-        onWillPop: () async {
-          print("aaa");
-          return false;
-        },
-
-        // onWillPop: () async {
-        //   if (Navigator.of(context).userGestureInProgress) {
-        //     print("object");
-        //     return true;
-        //   } else {
-        //     print("object1");
-        //     return false;
-        //   }
-        // },
-
-        // onWillPop: () async {
-        //   WebViewController c = await _controller.future;
-        //   await c.goBack();
-        //   return false;
-        // },
-        child: Scaffold(
-          backgroundColor: Colors.white,
-          body: netConnection == true
-              ? IndexedStack(
-                  index: position,
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width * 1,
-                      height: double.infinity,
-                      child: WebView(
-                        initialUrl: widget.url,
-                        javascriptMode: JavascriptMode.unrestricted,
-                        onWebViewCreated:
-                            (WebViewController webViewController) {
-                          if (!_controller.isCompleted) {
-                            _controller.complete(webViewController);
-                          } else {}
-                          _myController = webViewController;
-                        },
-                        onWebResourceError: (WebResourceError webError) {
-                          if (Platform.isAndroid) {
-                            if (webError.failingUrl == "tel:042111118693" ||
-                                webError.failingUrl ==
-                                    "tel:042%20111%2011%208693" ||
-                                webError.failingUrl ==
-                                    "mailto:customersupport@unze.com.pk") {
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: netConnection == true
+            ? IndexedStack(
+                index: position,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width * 1,
+                    height: double.infinity,
+                    child: Stack(
+                      children: [
+                        WebView(
+                          initialUrl: widget.url,
+                          javascriptMode: JavascriptMode.unrestricted,
+                          onWebViewCreated:
+                              (WebViewController webViewController) {
+                            if (!_controller.isCompleted) {
+                              _controller.complete(webViewController);
+                            } else {}
+                            _myController = webViewController;
+                          },
+                          onWebResourceError: (WebResourceError webError) {
+                            if (Platform.isAndroid) {
+                              if (webError.failingUrl == "tel:042111118693" ||
+                                  webError.failingUrl ==
+                                      "tel:042%20111%2011%208693" ||
+                                  webError.failingUrl ==
+                                      "mailto:customersupport@unze.com.pk") {
+                                setState(() {
+                                  position = 1;
+                                });
+                              } else {
+                                setState(() {
+                                  netConnection = false;
+                                });
+                              }
+                            } else if (Platform.isIOS) {}
+                          },
+                          onPageStarted: (initialUrl) {
+                            if (Platform.isIOS) {
                               setState(() {
                                 position = 1;
-                              });
-                            } else {
-                              setState(() {
-                                netConnection = false;
-                              });
-                            }
-                          } else if (Platform.isIOS) {}
-                        },
-                        onPageStarted: (initialUrl) {
-                          if (Platform.isIOS) {
-                            setState(() {
-                              position = 1;
-                              Future.delayed(Duration(seconds: 3), () {
-                                setState(() {
-                                  position = 0;
-                                  _myController.evaluateJavascript(
-                                      "document.getElementsByClassName('unze-app-top')[0].style.display='none';");
+                                Future.delayed(Duration(seconds: 3), () {
+                                  setState(() {
+                                    position = 0;
+                                    _myController.evaluateJavascript(
+                                        "document.getElementsByClassName('unze-app-top')[0].style.display='none';");
+                                  });
                                 });
                               });
-                            });
 
-                            initialUrl =
-                                initialUrl.toString().replaceAll("%20", "");
-                            if (initialUrl == "tel:042111118693") {
-                              launch("tel://042111118693");
-                            } else if (initialUrl.toString().contains(
-                                "mailto:customersupport@unze.com.pk")) {
-                              launch("mailto:customersupport@unze.com.pk");
-                            }
-                          } else if (Platform.isAndroid) {
-                            try {
-                              setState(() {
-                                position = 1;
-                                for (int i = 1; i <= 10; i++) {
-                                  Future.delayed(Duration(seconds: i), () {
-                                    setState(() {
-                                      if (i > 4) {
-                                        position = 0;
-                                      }
-                                      _myController.evaluateJavascript(
-                                          "document.getElementsByClassName('unze-app-top')[0].style.display='none';");
+                              initialUrl =
+                                  initialUrl.toString().replaceAll("%20", "");
+                              if (initialUrl == "tel:042111118693") {
+                                launch("tel://042111118693");
+                              } else if (initialUrl.toString().contains(
+                                  "mailto:customersupport@unze.com.pk")) {
+                                launch("mailto:customersupport@unze.com.pk");
+                              }
+                            } else if (Platform.isAndroid) {
+                              try {
+                                setState(() {
+                                  position = 1;
+                                  for (int i = 1; i <= 10; i++) {
+                                    Future.delayed(Duration(seconds: i), () {
+                                      setState(() {
+                                        if (i > 4) {
+                                          position = 0;
+                                        }
+                                        _myController.evaluateJavascript(
+                                            "document.getElementsByClassName('unze-app-top')[0].style.display='none';");
+                                      });
                                     });
-                                  });
-                                }
+                                  }
+                                });
+                              } catch (e) {}
+                            }
+                          },
+                          onPageFinished: (initialUrl) {
+                            try {
+                              _myController.evaluateJavascript(
+                                  "document.getElementsByClassName('unze-app-top')[0].style.display='none';");
+                              setState(() {
+                                position = 0;
                               });
                             } catch (e) {}
-                          }
-                        },
-                        onPageFinished: (initialUrl) {
-                          try {
-                            _myController.evaluateJavascript(
-                                "document.getElementsByClassName('unze-app-top')[0].style.display='none';");
-                            setState(() {
-                              position = 0;
-                            });
-                          } catch (e) {}
-                        },
-                      ),
-                    ),
-                    Container(
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          color: Color(0xff5d443c),
+                          },
                         ),
+                        Positioned(
+                          left: 0,
+                          child: GestureDetector(
+                            onTap: () async {
+                              print("lol");
+                              WebViewController webViewController =
+                                  await _controller.future;
+                              var currentUrl =
+                                  await webViewController.currentUrl();
+                              if (currentUrl == "https://unze.com.pk/") {
+                              } else {
+                                await webViewController.goBack();
+                              }
+                            },
+                            child: Container(
+                              color: Colors.transparent,
+                              height: MediaQuery.of(context).size.height,
+                              width: MediaQuery.of(context).size.width * 0.03,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: Color(0xff5d443c),
                       ),
                     ),
-                  ],
-                )
-              : pageError(
-                  context,
-                  webView,
-                ),
-        ),
+                  ),
+                ],
+              )
+            : pageError(
+                context,
+                webView,
+              ),
       ),
     );
   }
