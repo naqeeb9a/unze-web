@@ -68,18 +68,22 @@ void main() async {
 // }
 
 notify() async {
-  print("working");
   AwesomeNotifications().initialize('resource://drawable/ic_stat_logo', [
     NotificationChannel(
       channelKey: "key1",
       channelName: "proton coders point",
       channelDescription: "notification example",
-      enableLights: true,
+      channelShowBadge: true,
+      // enableLights: true,
       enableVibration: true,
       importance: NotificationImportance.High,
     )
   ]);
-
+  AwesomeNotifications().isNotificationAllowed().then((value) {
+    if (!value) {
+      AwesomeNotifications().requestPermissionToSendNotifications();
+    }
+  });
   var nDate = DateTime.now().toString().substring(0, 10);
   var nTime = DateTime.now().toString().substring(11, 16);
   var newNotification = [];
