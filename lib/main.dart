@@ -88,6 +88,8 @@ notify() async {
       "https://shopify.unze.com.pk/api/testApi.php?getPUSHNotifications=1"));
   var notificationDataBody = json.decode(notificationData.body);
 
+  print(notificationDataBody);
+
   for (var u in notificationDataBody) {
     var format = DateFormat("HH:mm");
     var one = format.parse(nTime);

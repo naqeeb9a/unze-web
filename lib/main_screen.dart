@@ -197,21 +197,23 @@ class _MainScreenState extends State<MainScreen> {
                         Positioned(
                           left: 0,
                           child: GestureDetector(
-                            onTap: () async {
-                              print("lol");
-                              WebViewController webViewController =
-                                  await _controller.future;
-                              var currentUrl =
-                                  await webViewController.currentUrl();
-                              if (currentUrl == "https://unze.com.pk/") {
-                              } else {
-                                await webViewController.goBack();
+                            onPanUpdate: (details) async {
+                              if (details.delta.dx > 0) {
+
+                                WebViewController webViewController =
+                                    await _controller.future;
+                                var currentUrl =
+                                    await webViewController.currentUrl();
+                                if (currentUrl == "https://unze.com.pk/") {
+                                } else {
+                                  await webViewController.goBack();
+                                }
                               }
                             },
                             child: Container(
                               color: Colors.transparent,
                               height: MediaQuery.of(context).size.height,
-                              width: MediaQuery.of(context).size.width * 0.03,
+                              width: MediaQuery.of(context).size.width * 0.028,
                             ),
                           ),
                         )
