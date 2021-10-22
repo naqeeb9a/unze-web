@@ -29,24 +29,12 @@ void main() async {
   );
 
   WidgetsFlutterBinding.ensureInitialized();
-  Workmanager().initialize(notify, isInDebugMode: false);
-  // Workmanager().registerOneOffTask(
-  //   "1",
-  //   "simpleTaskKey",
-  //   inputData: <String, dynamic>{
-  //     'int': 1,
-  //     'bool': true,
-  //     'double': 1.0,
-  //     'string': 'string',
-  //     'array': [1, 2, 3],
-  //   },
+  // Workmanager().initialize(notify, isInDebugMode: false);
+  // Workmanager().registerPeriodicTask(
+  //   "2",
+  //   "simplePeriodicTask",
+  //   frequency: Duration(minutes: 15),
   // );
-  Workmanager().registerPeriodicTask(
-    "2",
-    "simplePeriodicTask",
-    frequency: Duration(minutes: 15),
-  );
-  // callbackDispatcher();
   notify();
   runApp(
     MaterialApp(
@@ -80,6 +68,7 @@ void main() async {
 // }
 
 notify() async {
+  print("working");
   AwesomeNotifications().initialize('resource://drawable/ic_stat_logo', [
     NotificationChannel(
       channelKey: "key1",
@@ -96,7 +85,7 @@ notify() async {
   var newNotification = [];
   var nImages = [];
   var notificationData = await http.get(Uri.parse(
-      "https://shopify.unze.com.pk/api/api.php?getPUSHNotifications"));
+      "https://shopify.unze.com.pk/api/testApi.php?getPUSHNotifications=1"));
   var notificationDataBody = json.decode(notificationData.body);
 
   for (var u in notificationDataBody) {
