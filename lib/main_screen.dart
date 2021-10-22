@@ -167,7 +167,7 @@ class _MainScreenState extends State<MainScreen> {
                           if (Platform.isIOS) {
                             setState(() {
                               position = 1;
-                              Future.delayed(Duration(seconds: 4), () {
+                              Future.delayed(Duration(seconds: 3), () {
                                 setState(() {
                                   position = 0;
                                   _myController.evaluateJavascript(

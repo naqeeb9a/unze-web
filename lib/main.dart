@@ -247,8 +247,34 @@ class _LocationCheckState extends State<LocationCheck> {
     return SafeArea(
       child: Scaffold(
         body: name != "none"
-            ? Center(
-                child: CircularProgressIndicator(),
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                    ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: MediaQuery.of(context).size.height * .03,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Preparing App according to your location.",
+                          style: TextStyle(
+                            color: Color(0xff5d443c),
+                            fontSize: MediaQuery.of(context).size.width * .04,
+                          ),
+                          maxLines: 2,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               )
             : Column(
                 mainAxisAlignment: MainAxisAlignment.center,
