@@ -29,13 +29,12 @@ void main() async {
   );
 
   WidgetsFlutterBinding.ensureInitialized();
-  // Workmanager().initialize(notify, isInDebugMode: false);
-  // Workmanager().registerPeriodicTask(
-  //   "2",
-  //   "simplePeriodicTask",
-  //   frequency: Duration(minutes: 15),
-  // );
-  notify();
+  Workmanager().initialize(notify, isInDebugMode: false);
+  Workmanager().registerPeriodicTask(
+    "2",
+    "simplePeriodicTask",
+    frequency: Duration(minutes: 15),
+  );
   runApp(
     MaterialApp(
       title: 'Unze Pakistan',
@@ -54,19 +53,6 @@ void main() async {
   );
 }
 
-// void callbackDispatcher() {
-//   stderr.writeln("in");
-//   Workmanager().executeTask((task, inputData) {
-//     switch (task) {
-//       case Workmanager.iOSBackgroundTask:
-//         stderr.writeln("The iOS background fetch was triggered");
-//         break;
-//     }
-//     bool success = true;
-//     return Future.value(success);
-//   });
-// }
-
 notify() async {
   AwesomeNotifications().initialize('resource://drawable/ic_stat_logo', [
     NotificationChannel(
@@ -74,7 +60,6 @@ notify() async {
       channelName: "proton coders point",
       channelDescription: "notification example",
       channelShowBadge: true,
-      // enableLights: true,
       enableVibration: true,
       importance: NotificationImportance.High,
     )
