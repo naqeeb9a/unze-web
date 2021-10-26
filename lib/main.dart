@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,6 +11,25 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unze_web_clone_app/main_screen.dart';
 import 'package:workmanager/workmanager.dart';
+
+const myTask = "syncWithTheBackEnd";
+
+void callbackDispatcher() {
+  Workmanager().executeTask((task, inputData) {
+    switch (task) {
+      case myTask:
+        notify();
+        stderr.writeln("this method was called from native!");
+        break;
+      case Workmanager.iOSBackgroundTask:
+        notify();
+        stderr.writeln("The iOS background fetch was triggered!!!!");
+        break;
+    }
+    bool success = true;
+    return Future.value(success);
+  });
+}
 
 void main() async {
   final MaterialColor primaryColor = const MaterialColor(
@@ -29,12 +49,31 @@ void main() async {
   );
 
   WidgetsFlutterBinding.ensureInitialized();
-  Workmanager().initialize(notify, isInDebugMode: false);
-  Workmanager().registerPeriodicTask(
+  Workmanager().initialize(notify, isInDebugMode: true);
+  Workmanager().registerOneOffTask(
     "2",
     "simplePeriodicTask",
-    frequency: Duration(minutes: 15),
   );
+
+  //
+  // WidgetsFlutterBinding.ensureInitialized();
+  // Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
+  // // Workmanager().registerPeriodicTask(
+  // //   "2",
+  // //   "simplePeriodicTask",
+  // //   frequency: Duration(minutes: 15),
+  // // );
+  // Workmanager().registerOneOffTask(
+  //   "1",
+  //   myTask,
+  //   inputData: <String, dynamic>{
+  //     'int': 1,
+  //     'bool': true,
+  //     'double': 1.0,
+  //     'string': 'string',
+  //     'array': [1, 2, 3],
+  //   },
+  // );
   runApp(
     MaterialApp(
       title: 'Unze Pakistan',
@@ -54,6 +93,7 @@ void main() async {
 }
 
 notify() async {
+  print("The iOS background was triggered!!!!");
   AwesomeNotifications().initialize('resource://drawable/ic_stat_logo', [
     NotificationChannel(
       channelKey: "key1",
@@ -76,8 +116,6 @@ notify() async {
   var notificationData = await http.get(Uri.parse(
       "https://shopify.unze.com.pk/api/testApi.php?getPUSHNotifications=1"));
   var notificationDataBody = json.decode(notificationData.body);
-
-  print(notificationDataBody);
 
   for (var u in notificationDataBody) {
     var format = DateFormat("HH:mm");
