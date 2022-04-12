@@ -1,26 +1,24 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:io' show Platform;
-
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:webview_flutter/platform_interface.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import 'main.dart';
+import 'location_check.dart';
 
 class MainScreen extends StatefulWidget {
   final String url;
 
-  MainScreen({required this.url});
+  const MainScreen({Key? key, required this.url}) : super(key: key);
 
   @override
   _MainScreenState createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
-  Completer<WebViewController> _controller = Completer<WebViewController>();
+  final Completer<WebViewController> _controller =
+      Completer<WebViewController>();
 
   late WebViewController _myController;
 
@@ -46,13 +44,16 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+
+    FirebaseMessaging.instance.getToken().then((value) {
+      print("token $value");
+    });
 
     webView();
     if (Platform.isAndroid) {
       Timer.periodic(
-        Duration(milliseconds: 150),
+        const Duration(milliseconds: 150),
         (Timer t) => checkLink(),
       );
     } else if (Platform.isIOS) {}
@@ -100,7 +101,9 @@ class _MainScreenState extends State<MainScreen> {
           });
         }
       }
-    } catch (e) {}
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   @override
@@ -112,7 +115,7 @@ class _MainScreenState extends State<MainScreen> {
             ? IndexedStack(
                 index: position,
                 children: [
-                  Container(
+                  SizedBox(
                     width: MediaQuery.of(context).size.width * 1,
                     height: double.infinity,
                     child: Stack(
@@ -148,12 +151,13 @@ class _MainScreenState extends State<MainScreen> {
                             if (Platform.isIOS) {
                               setState(() {
                                 position = 1;
-                                Future.delayed(Duration(seconds: 3), () {
+                                Future.delayed(
+                                    const Duration(milliseconds: 2000), () {
                                   setState(() {
                                     position = 0;
-                                    _myController.evaluateJavascript(
-                                        "document.getElementsByClassName('unze-app-top')[0].style.display='none';");
                                   });
+                                  _myController.runJavascript(
+                                      "\$('.native-app-banner').css('display', 'none');");
                                 });
                               });
 
@@ -175,23 +179,27 @@ class _MainScreenState extends State<MainScreen> {
                                         if (i > 4) {
                                           position = 0;
                                         }
-                                        _myController.evaluateJavascript(
-                                            "document.getElementsByClassName('unze-app-top')[0].style.display='none';");
+                                        _myController.runJavascript(
+                                            "document.getElementsByClassName('native-app-banner')[0].style.display='none';");
                                       });
                                     });
                                   }
                                 });
-                              } catch (e) {}
+                              } catch (e) {
+                                debugPrint(e.toString());
+                              }
                             }
                           },
                           onPageFinished: (initialUrl) {
                             try {
-                              _myController.evaluateJavascript(
-                                  "document.getElementsByClassName('unze-app-top')[0].style.display='none';");
                               setState(() {
                                 position = 0;
                               });
-                            } catch (e) {}
+                              _myController.runJavascript(
+                                  "\$('.native-app-banner').css('display', 'none');");
+                            } catch (e) {
+                              debugPrint(e.toString());
+                            }
                           },
                         ),
                         Positioned(
@@ -199,7 +207,6 @@ class _MainScreenState extends State<MainScreen> {
                           child: GestureDetector(
                             onPanUpdate: (details) async {
                               if (details.delta.dx > 0) {
-
                                 WebViewController webViewController =
                                     await _controller.future;
                                 var currentUrl =
@@ -220,11 +227,9 @@ class _MainScreenState extends State<MainScreen> {
                       ],
                     ),
                   ),
-                  Container(
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        color: Color(0xff5d443c),
-                      ),
+                  const Center(
+                    child: CircularProgressIndicator(
+                      color: Color(0xff5d443c),
                     ),
                   ),
                 ],
@@ -239,7 +244,7 @@ class _MainScreenState extends State<MainScreen> {
 }
 
 Widget pageError(context, webView) {
-  return Container(
+  return SizedBox(
     width: MediaQuery.of(context).size.width * 1,
     height: MediaQuery.of(context).size.height * 1,
     child: Column(
@@ -250,7 +255,7 @@ Widget pageError(context, webView) {
           children: [
             Icon(
               Icons.wifi_off_rounded,
-              color: Color(0xff5d443c),
+              color: const Color(0xff5d443c),
               size: MediaQuery.of(context).size.width * .2,
             ),
           ],
@@ -262,7 +267,7 @@ Widget pageError(context, webView) {
               "No Internet Connection!!",
               style: TextStyle(
                 fontSize: MediaQuery.of(context).size.width * .07,
-                color: Color(0xff5d443c),
+                color: const Color(0xff5d443c),
               ),
             ),
           ],
@@ -275,14 +280,15 @@ Widget pageError(context, webView) {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => LocationCheck()),
+                  MaterialPageRoute(
+                      builder: (context) => const LocationCheck()),
                 );
               },
               child: Container(
                 width: MediaQuery.of(context).size.width * .4,
                 height: MediaQuery.of(context).size.height * .07,
                 decoration: BoxDecoration(
-                  color: Color(0xff5d443c),
+                  color: const Color(0xff5d443c),
                   borderRadius: BorderRadius.circular(
                     MediaQuery.of(context).size.width * .02,
                   ),

@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "282845451020",
+    "project_id": "unze-london-dae6f",
+    "storage_bucket": "unze-london-dae6f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:282845451020:android:32d2540623ee22793f2f29",
+        "android_client_info": {
+          "package_name": "com.unze.unze"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "282845451020-srtqoti5itnemkbugr7145nbbbp5e71j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzlflKiKpzeRr5ZG6PpSG0O8CtwlHAPDY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "282845451020-srtqoti5itnemkbugr7145nbbbp5e71j.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "282845451020-76m6bjr1d0jcv3hav35r56in9et4lhqs.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.unze.unze-app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

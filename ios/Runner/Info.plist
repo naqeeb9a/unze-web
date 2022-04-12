@@ -24,6 +24,8 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<string>no</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>https</string>
@@ -39,15 +41,14 @@
 		<true/>
 	</dict>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Unze needs Location access for "Preparing app according to location"!</string>
+	<string>Unze needs Location turned on to work properly. Tap"Only While Using the App" to make app accurate according to your location. Unze contains different stores in different countries. Allowing app to access location shows you the correct store.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Unze needs Location access for "Preparing app according to location"!</string>
+	<string>Unze needs Location turned on to work properly. Tap"Only While Using the App" to make app accurate according to your location. Unze contains different stores in different countries. Allowing app to access location shows you the correct store.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Unze needs Location access for "Preparing app according to location"!</string>
+	<string>Unze needs Location turned on to work properly. Tap"Only While Using the App" to make app accurate according to your location. Unze contains different stores in different countries. Allowing app to access location shows you the correct store.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
-		<string>processing</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
